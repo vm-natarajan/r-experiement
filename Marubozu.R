@@ -2,6 +2,8 @@
 #1.1 To find occurence of bullish Marubozu by passed dataset,along with lengths of body,lowershadow and upper
 #shadow
 
+#Notes : - When this pattern appears,the next few sessions are expected to be bullish
+
 findBullishMarubozu <- function (dataset,body=80,ls=25,us=25){
   
   #if(dataset$Close.Price>dataset$Open.Price)
@@ -37,6 +39,8 @@ findBullishMarubozu <- function (dataset,body=80,ls=25,us=25){
 
 #1.2 To find occurence of Bearish Marubozu by passed dataset,along with lengths of body,lowershadow and upper
 #shadow
+
+#Notes : - When this pattern appears,the next few sessions are expected to be bearish
 
 findBearishMarubozu <- function (dataset,body=80,ls=25,us=25){
   
