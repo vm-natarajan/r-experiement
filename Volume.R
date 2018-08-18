@@ -28,3 +28,23 @@ findPatternUsingVolume <- function(dataset,days = 5){
   return(volume);
   
 }
+
+calculatePriceVolumeTrend <- function(dataset = dataset,days = 10){
+  
+  resultset <- data.frame(matrix(ncol = 3, nrow = 0));
+  colnames(resultset) <- c("security","date","pv_trend");
+  pvt <- dataset[(nrow(dataset)-days+1),]$No.of.Shares;
+  for(row in (nrow(dataset)-days):1){
+    
+    previous_close <-  dataset[(row+1),]$Close.Price;
+    close_price <- dataset[row,]$Close.Price;
+    close_price_cent_change <- ((close_price - previous_close)/previous_close);
+    volume_cent_change <- close_price_cent_change*dataset[row,]$No.of.Shares;
+    pvt <- pvt + volume_cent_change;
+    temp_set <- cbind(security = as.character(dataset[row,"Security"]),date = as.character(dataset[row,"Date"]),pv_trend = pvt);
+    resultset <- rbind(resultset,temp_set);
+  }
+  return(resultset);
+}
+
+
