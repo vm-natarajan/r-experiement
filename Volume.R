@@ -5,7 +5,7 @@ findPatternUsingVolume <- function(dataset,days = 5){
   colnames(volume) <- col_names
   for(row in 1:nrow(dataset)){
     if(row <= (nrow(dataset)-days)){
-
+      
       previous_days_dataset <- dataset[c((row+1):(row+days)),];
       wap_average <- mean(previous_days_dataset$WAP);
       volume_average <- mean(previous_days_dataset$No.of.Shares);
@@ -48,3 +48,29 @@ calculatePriceVolumeTrend <- function(dataset = dataset,days = 10){
 }
 
 
+calculateOnBalanceVolumeTrend <- function(dataset = dataset,days = 20){
+  
+  resultset <- data.frame(matrix(ncol = 3, nrow = 0));
+  colnames(resultset) <- c("security","date","obv_trend");
+  obv <- dataset[(nrow(dataset)-days),]$No.of.Shares;
+  
+  temp_set <- cbind(security = as.character(dataset[(nrow(dataset)-days),"Security"]),date = as.character(dataset[(nrow(dataset)-days),"Date"]),obv_trend = obv);
+  resultset <- rbind(resultset,temp_set);
+  
+  for(row in (nrow(dataset)-days-1):1){
+    current_price <- dataset[row,]$Close.Price;
+    current_volume <- dataset[row,]$No.of.Shares;
+    previous_price <- dataset[(row+1),]$Close.Price;
+    if(current_price > previous_price){
+      obv <- obv + current_volume;
+    }else if(current_price < previous_price){
+      obv <- (obv - current_volume);
+    }else{
+      obv <- obv;
+    }
+    temp_set <- cbind(security = as.character(dataset[row,"Security"]),date = as.character(dataset[row,"Date"]),obv_trend = obv);
+    resultset <- rbind(resultset,temp_set);
+  }
+  return(resultset);
+  
+}
