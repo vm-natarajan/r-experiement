@@ -1,4 +1,4 @@
-findPatternUsingVolume <- function(dataset,days = 5){
+findPatternUsingVolume <- function(dataset,days = 12){
   
   volume <- data.frame(matrix(ncol = 3, nrow = 0))
   col_names <- c("security", "date", "trend")
@@ -29,7 +29,7 @@ findPatternUsingVolume <- function(dataset,days = 5){
   
 }
 
-calculatePriceVolumeTrend <- function(dataset = dataset,days = 10){
+calculatePriceVolumeTrend <- function(dataset = dataset,days = 12){
   
   resultset <- data.frame(matrix(ncol = 3, nrow = 0));
   colnames(resultset) <- c("security","date","pv_trend");
@@ -48,7 +48,7 @@ calculatePriceVolumeTrend <- function(dataset = dataset,days = 10){
 }
 
 
-calculateOnBalanceVolumeTrend <- function(dataset = dataset,days = 20){
+calculateOnBalanceVolumeTrend <- function(dataset = dataset,days = 12){
   
   resultset <- data.frame(matrix(ncol = 3, nrow = 0));
   colnames(resultset) <- c("security","date","obv_trend");
