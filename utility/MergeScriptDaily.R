@@ -1,7 +1,7 @@
 mergeDailyData = function(){
   
-  setwd(dir = "C:\\Users\\VNatarajan\\R\\");
-  zip_files <- list.files(path = ".",pattern = "*\\.ZIP");
+  setwd(dir = "/Users/veera/d-science/bse/scrape/daily/src/");
+  zip_files <- list.files(path = ".",pattern = "*\\.ZIP|*\\.zip");
   dataset <- data.frame(matrix(ncol = 14, nrow = 0));
   
   for(zip_file in zip_files){
@@ -29,6 +29,6 @@ mergeDailyData = function(){
   dataset$WAP <- NA;
   dataset$Spread.High.Low <- dataset$High.Price - dataset$Low.Price;
   dataset$Spread.Close.Open <- dataset$Close.Price - dataset$Open.Price;
-  write.csv(x = dataset,file = "daily_combined.csv",row.names = FALSE);
+  write.csv(x = dataset,file = "/Users/veera/d-science/bse/scrape/daily/dest/daily_combined.csv",row.names = FALSE);
   
 }
