@@ -54,7 +54,7 @@ calculateAverageTrueRange <- function(dataset = dataset, days = 14 ,limit = 100)
   for(row in 1:nrow(dataset)){
     if(row <= (nrow(dataset)-days)){
       previous_days_dataset <- dataset[c((row+1):(row+days)),];
-      average_atr <- mean(previous_days_dataset$true_range);
+      average_atr <- round(mean(previous_days_dataset$true_range),digits = 3);
       new_row <- data.frame(security = dataset$security[row],date = dataset$date[row],atr=average_atr);
       average_true_range_set <- rbind(average_true_range_set,new_row);
     }

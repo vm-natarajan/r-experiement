@@ -3,20 +3,20 @@ calculateSimpleMovingAverage <- function(dataset = dataset,days = 12,limit = 100
   if(nrow(dataset) > limit)
     dataset <- dataset[c(1:(limit+days)),];
   
-  simple_moving_average <- data.frame(matrix(ncol = 3, nrow = 0))
-  col_names <- c("security", "date", "simple_moving_average")
-  colnames(simple_moving_average) <- col_names
+  sma <- data.frame(matrix(ncol = 3, nrow = 0))
+  col_names <- c("security", "date", "sma")
+  colnames(sma) <- col_names
   
   for(row in 1:nrow(dataset)){
     if(row <= (nrow(dataset)-days)){
       previous_days_dataset <- dataset[c((row+1):(row+days)),];
       average <- mean(previous_days_dataset$Close.Price);
-      new_row <- data.frame(security = dataset$Security[row],date = dataset$Date[row],simple_moving_average=average);
-      simple_moving_average <- rbind(simple_moving_average,new_row);
+      new_row <- data.frame(security = dataset$Security[row],date = dataset$Date[row],sma=average);
+      sma <- rbind(sma,new_row);
     }
   }
   
-  return(simple_moving_average);
+  return(sma);
   
 }
 
@@ -33,6 +33,28 @@ runSMA <- function(masterset = dataset,days = 12,limit = 100){
     sma_set <- rbind(sma_set,sma);
   }
   
+  return(sma_set);
+  
+}
+
+#REFERENCE : https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:moving_average_envelopes
+
+runSMAEnvelope <- function(masterset = dataset,days = 12,limit = 100){
+  
+  securities <- unique(masterset$Security);
+  sma_set <- data.frame(matrix(ncol = 3, nrow = 0))
+  col_names <- c("security", "date","sma")
+  colnames(sma_set) <- col_names
+  for(security in securities){
+    data <- masterset[masterset$Security == security,]
+    sma <- calculateSimpleMovingAverage(dataset = data,days = days,limit = limit);
+    sma_set <- rbind(sma_set,sma);
+  }
+  
+  sma_numeric <- as.numeric(as.character(sma_set[,"sma"]));
+  lower_envelope = sma_numeric - (0.025* sma_numeric);
+  upper_envelope = sma_numeric + (0.025* sma_numeric);
+  sma_set <-cbind(sma_set,lower_envelope = lower_envelope,upper_envelope = upper_envelope);
   return(sma_set);
   
 }
@@ -71,6 +93,28 @@ runEMA <- function(masterset = dataset,days = 12,limit = 100){
     ema_set <- rbind(ema_set,ema);
   }
   
+  return(ema_set);
+  
+}
+
+#REFERENCE : https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:moving_average_envelopes
+
+runEMAEnvelope <- function(masterset = dataset,days = 12,limit = 100){
+  
+  securities <- unique(masterset$Security);
+  ema_set <- data.frame(matrix(ncol = 3, nrow = 0))
+  col_names <- c("security", "date","ema")
+  colnames(ema_set) <- col_names
+  
+  for(security in securities){
+    data <- masterset[masterset$Security == security,]
+    ema <- calculateExponentialMovingAverage(dataset = data,days = days,limit = limit);
+    ema_set <- rbind(ema_set,ema);
+  }
+  ema_numeric <- as.numeric(as.character(ema_set[,"ema"]));
+  lower_envelope = ema_numeric - (0.025* ema_numeric);
+  upper_envelope = ema_numeric + (0.025* ema_numeric);
+  ema_set <-cbind(ema_set,lower_envelope = lower_envelope,upper_envelope = upper_envelope);
   return(ema_set);
   
 }
