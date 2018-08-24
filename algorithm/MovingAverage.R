@@ -118,3 +118,14 @@ runEMAEnvelope <- function(masterset = dataset,days = 12,limit = 100){
   return(ema_set);
   
 }
+
+calculateMovingAverageConvergenceDivergence <- function(dataset = dataset,days1 = 26,days2 = 12,limit = 100){
+  days1_set <- runEMA(dataset,days1,limit);
+  print(nrow(days1_set));
+  days2_set <- runEMA(dataset,days2,limit);
+  days2_set <- days2_set[c(1:nrow(days1_set)),]
+  print(nrow(days2_set));
+  macd <- as.numeric(as.character(days2_set$ema)) - as.numeric(as.character(days1_set$ema));
+  resultset <- cbind(security = days1_set$Security,date = days1_set$Date,days1_ema = days1_set$ema,days2_ema = days2_set$ema,macd = macd);
+  return(resultset);
+}

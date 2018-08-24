@@ -1,6 +1,14 @@
-mergeDailyData = function(){
+mergeDailyData = function(indices= 200){
   
   setwd(dir = "/Users/veera/d-science/bse/scrape/daily/src/");
+  reference_indices_path <- "/Users/veera/d-science/bse/";
+  if(200){
+    indices_list <- paste(reference_indices_path,"BSE_200.csv",sep = "");
+  }else{
+    indices_list <- paste(reference_indices_path,"BSE_30.csv");
+  }
+ 
+  indices_names <- read.csv(indices_list);
   zip_files <- list.files(path = ".",pattern = "*\\.ZIP|*\\.zip");
   dataset <- data.frame(matrix(ncol = 14, nrow = 0));
   
@@ -29,6 +37,15 @@ mergeDailyData = function(){
   dataset$WAP <- NA;
   dataset$Spread.High.Low <- dataset$High.Price - dataset$Low.Price;
   dataset$Spread.Close.Open <- dataset$Close.Price - dataset$Open.Price;
+  dataset <- cbind(dataset,Load.Type = "DAILY")
+  dataset <- dataset[dataset$Security %in% indices_names$SecurityId,]
+  for(row in 1:nrow(dataset)){
+    if(dataset$Security[row] %in% indices_names$SecurityId){
+      ro <- which(indices_names$SecurityId == dataset$Security[row]);
+      print(as.character(indices_names$Security[ro]));
+      dataset$Security[row] <- as.character(indices_names$Security[ro]);
+    }
+  }
   write.csv(x = dataset,file = "/Users/veera/d-science/bse/scrape/daily/dest/daily_combined.csv",row.names = FALSE);
   
 }
