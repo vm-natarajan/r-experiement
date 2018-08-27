@@ -1,9 +1,9 @@
-setwd("/Users/veera/d-science/bse/src/")
+setwd("/Users/veera/d-science/bse/scrape/dump/src/")
 if(exists("dataset")){
   rm(dataset)
 }
 
-files <- list.files(path = "/Users/veera/d-science/bse/src/",pattern = "*.csv");
+files <- list.files(path = "/Users/veera/d-science/bse/scrape/dump/src/",pattern = "*.csv");
 
 for (file in files) {
   
@@ -23,4 +23,4 @@ for (file in files) {
   
 }
 
-write.table(dataset,file = "/Users/veera/d-science/bse/dest/combined.csv",col.names = TRUE,sep = ",",row.names = FALSE)
+write.table(dataset,file = "/Users/veera/d-science/bse/scrape/dump/dest/combined.csv",col.names = TRUE,sep = ",",row.names = FALSE)

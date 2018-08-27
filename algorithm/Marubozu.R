@@ -33,6 +33,7 @@ findBullishMarubozu <- function (dataset,body=80,ls=25,us=25){
     #The final dataframe that returns bullish data by applying the given filter parameters
     dataset <- dataset[i_result$l_body>=body & i_result$l_lowershadow<=ls & i_result$l_uppershadow<=us,];
     
+    dataset <- as.data.frame(cbind(Security = dataset$Security,Date = dataset$Date,Open.Price = dataset$Open.Price,Low.Price = dataset$Low.Price,High.Price = dataset$High.Price,Close.Price = dataset$Close.Price))
     return(dataset);
 }    
 
@@ -74,4 +75,24 @@ findBearishMarubozu <- function (dataset,body=80,ls=25,us=25){
   return(dataset);
 }    
 
+# R function that acts an engine to calculate ROC for all securities
+runBullishMarubozu <- function(masterset = dataset,body=80,ls=25,us=25){
 
+  securities <- unique(masterset$Security);
+  
+  #Initalization of data frame that holds resultant dataset
+  m_bull_set <- data.frame(matrix(ncol = 6, nrow = 0));
+ # col_names <- c("Security", "Date", "ROC")
+  #colnames(roc_set) <- col_names;
+  
+  for(security in securities){
+    
+    data <- masterset[masterset$Security == security,];
+    m_bull <- findBullishMarubozu(dataset = data,body = body,ls = ls,us = us);
+    m_bull_set <- rbind(m_bull_set,m_bull);
+    
+  }
+  
+  return(m_bull_set);
+  
+}

@@ -24,10 +24,11 @@ mergeDailyData = function(indices= 200){
     month <- substr(data_file,start = 5,stop = 6);
     year <- substr(data_file,start = 7,stop = 8);
     date <- paste(year,month,day,sep = "-")
-    mon <- format(as.Date(date),"%b")
+    mon <- format(as.Date(date),"%B")
     date <- paste(day,mon,year,sep = "-")
+    date <- paste("",date,sep = "")
     day_wise <- read.csv(file = data_file);
-    day_wise <- cbind(Date = date,day_wise,DQ = "NA",XDQTOTQ = "NA",SHL = "NA",SCO = "NA");
+    day_wise <- cbind(Date = as.character(date),day_wise,DQ = "NA",XDQTOTQ = "NA",SHL = "NA",SCO = "NA");
     dataset <- rbind(dataset,day_wise);
     
   }
@@ -42,7 +43,6 @@ mergeDailyData = function(indices= 200){
   for(row in 1:nrow(dataset)){
     if(dataset$Security[row] %in% indices_names$SecurityId){
       ro <- which(indices_names$SecurityId == dataset$Security[row]);
-      print(as.character(indices_names$Security[ro]));
       dataset$Security[row] <- as.character(indices_names$Security[ro]);
     }
   }

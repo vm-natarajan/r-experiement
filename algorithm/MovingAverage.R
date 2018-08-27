@@ -123,27 +123,44 @@ calculateMovingAverageConvergenceDivergence <- function(dataset = dataset,days1 
   
   days1_set <- runEMA(dataset,days1,limit);
   days2_set <- runEMA(dataset,days2,limit);
-  days2_set <- days2_set[c(1:nrow(days1_set)),]
+  days2_set <- days2_set[c(1:nrow(days1_set)),];
+  
   macd <- as.numeric(as.character(days2_set$ema)) - as.numeric(as.character(days1_set$ema));
   resultset <- cbind(security = as.character(days1_set$security),date = as.character(days1_set$date),days1_ema = as.character(days1_set$ema),days2_ema = as.character(days2_set$ema),macd = as.numeric(format(macd,digits = 3)));
-  
+  resultset <- as.data.frame(resultset);
   
   smoothing_constant <- 2/(signal_days+1);
-  initial_macd_dataset <- resultset[nrow(resultset):(nrow(resultset)-signal_days+1),];
-  macd_ema <- as.numeric(mean(initial_macd_dataset$macd));
-  resultset <- data.frame(matrix(ncol = 3, nrow = 0));
-  colnames(resultset) <- c("security","date","ema");
+  initial_macd_dataset <- as.data.frame(resultset[nrow(resultset):(nrow(resultset)-signal_days+1),]);
+  macd_ema <- mean(as.numeric(as.character(initial_macd_dataset$macd)));
+  resultset_with_signal <- data.frame(matrix(ncol = 5, nrow = 0));
+  colnames(resultset_with_signal) <- c("security","date","days1_ema","days2_ema","signal");
   
-  for(row in (nrow(resultset)-days):1){
-    macd <- resultset[row,]$macd;
-    macd_ema <- ((macd - macd_ema)*smoothing_constant) + macd;
-    temp_set <- cbind(security = as.character(dataset[row,"Security"]),date = as.character(dataset[row,"Date"]),ema = round(ema,3));
-    resultset <- rbind(resultset,temp_set);
+  for(row in (nrow(resultset) - signal_days+1):1){
+    macd <- as.numeric(as.character(resultset$macd[row]));
+    
+    if(row != nrow(resultset) - signal_days+1)
+      macd_ema <- ((macd - macd_ema)*smoothing_constant) + macd_ema;
+     
+    temp_set <- cbind(resultset[row,],signal = macd_ema);
+    resultset_with_signal <- rbind(resultset_with_signal,temp_set);
   }
   
-  resultset <- resultset[c(nrow(resultset):1),]
-  return(resultset);
+  resultset_with_signal <- resultset_with_signal[c(nrow(resultset_with_signal):1),]
+  return(resultset_with_signal);
   
-  #return(resultset);
+}
+
+runMACD <- function(masterset = dataset,days1 = 26,days2 = 12,signal_days = 10,limit = 100){
+
+  securities <- unique(masterset$Security);
+  macd_set <- data.frame(matrix(ncol = 6, nrow = 0))
+  
+  for(security in securities){
+    data <- masterset[masterset$Security == security,]
+    macd <- calculateMovingAverageConvergenceDivergence(dataset = data,days1 = days1,days2 = days2,signal_days = signal_days,limit = limit);
+    macd_set <- rbind(macd_set,macd);
+  }
+  
+  return(macd_set);
   
 }

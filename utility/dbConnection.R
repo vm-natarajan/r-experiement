@@ -5,6 +5,6 @@ db <- function(tableName){
   dbName <- 'bse';
   hostName <- 'localhost';
   db = dbConnect(MySQL(), user=userName, password=passWord, dbname=dbName, host=hostName);
-  rs <- dbGetQuery(db,paste("select * from",tableName ));
+  rs <- dbGetQuery(db,paste("select * from",tableName,"order by Date DESC;"));
   return(rs);
 }
