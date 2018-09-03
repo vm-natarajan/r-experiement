@@ -60,6 +60,7 @@ calculateAverageTrueRange <- function(dataset = dataset, days = 14 ,limit = 100)
     }
   }
   
+  average_true_range_set$date <- as.Date(average_true_range_set$date);
   return(average_true_range_set);
   
 }
@@ -68,8 +69,8 @@ runATR <- function(masterset = dataset,days = 14,limit = 100){
   
   securities <- unique(masterset$Security);
   atr_set <- data.frame(matrix(ncol = 3, nrow = 0));
-  col_names <- c("security", "date", "atr");
-  colnames(atr_set) <- col_names;
+  #col_names <- c("security", "date", "atr");
+  #colnames(atr_set) <- col_names;
   
   for(security in securities){
     

@@ -1,2 +1,20 @@
 Sensex Data:
 https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=7&ved=2ahUKEwiog93gj_jcAhUFUKwKHewLBWwQFjAGegQIBxAC&url=https%3A%2F%2Fwww.bseindia.com%2Fdownloads1%2Feligible.xls&usg=AOvVaw2jkotISCWxaoWHPC2rie2E
+
+UPDATE bse.bse_200
+set DATE =  str_to_date(Date,"%d-%M-%Y")
+WHERE `Load.Type` = 'DUMP'
+
+UPDATE bse.bse_200
+set DATE =  str_to_date(Date,"%d-%b-%Y")
+WHERE `Load.Type` = 'DAILY'
+
+INCREASE PATTERN:
+1.  US = 2*B
+2.  B = 3*US
+
+DECREASE PATTERN:
+
+BRITANNIA
+BAJFINANCE
+NESTLEIND

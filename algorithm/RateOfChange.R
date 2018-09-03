@@ -30,10 +30,10 @@ calculateRateOfChange <- function(dataset = dataset,days = 12,limit = 100){
       current_close_price <- current_day_dataset$Close.Price;
       
       #Calculate Rate Of Change
-      roc_calc <- ((current_close_price - previous_close_price)/previous_close_price)*100;
+      roc_calc <- format(((current_close_price - previous_close_price)/previous_close_price)*100,digits = 2);
       
       #Create new data set that columns- security, date and roc
-      new_row <- data.frame(Security = dataset$Security[row],Date = dataset$Date[row],ROC = roc_calc);
+      new_row <- data.frame(Security = dataset$Security[row],Date = dataset$Date[row],ROC = roc_calc,stringsAsFactors = FALSE);
       
       #Merge the new calculated roc with the resultant data set
       roc <- rbind(roc,new_row);
@@ -42,6 +42,9 @@ calculateRateOfChange <- function(dataset = dataset,days = 12,limit = 100){
     
   }
   
+  roc$Security <- as.factor(roc$Security);
+  roc$ROC <- as.numeric(roc$ROC);
+  roc$Date <- as.Date(roc$Date);
   return(roc);
   
 }
@@ -53,8 +56,6 @@ runROC <- function(masterset = dataset,days = 12,limit = 100){
   
   #Initalization of data frame that holds resultant dataset
   roc_set <- data.frame(matrix(ncol = 3, nrow = 0));
-  col_names <- c("Security", "Date", "ROC")
-  colnames(roc_set) <- col_names;
   
   for(security in securities){
     

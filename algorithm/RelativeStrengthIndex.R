@@ -30,7 +30,7 @@ calculateRelativeStrengthIndex <- function(dataset = dataset,days = 12){
   return(relative_strenth_index);
 }
 
-runRelativeStrenthIndex <- function(masterset = dataset,days = 12){
+runRSI <- function(masterset = dataset,days = 12){
   
   securities <- unique(masterset$Security);
   rsi_set <- data.frame(matrix(ncol = 2, nrow = 0))
