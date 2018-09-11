@@ -15,7 +15,10 @@ calculateSimpleMovingAverage <- function(dataset = dataset,days = 12,limit = 100
       sma <- rbind(sma,new_row);
     }
   }
-  
+  sma$sma <- as.numeric(sma$sma);
+  sma$date <- as.Date(sma$date);
+  sma <- sma[c(nrow(sma):1),];
+  rownames(sma) <- c(1:nrow(sma));
   return(sma);
   
 }
@@ -25,8 +28,6 @@ runSMA <- function(masterset = dataset,days = 12,limit = 100){
   
   securities <- unique(masterset$Security);
   sma_set <- data.frame(matrix(ncol = 3, nrow = 0))
-  col_names <- c("security", "date","sma")
-  colnames(sma_set) <- col_names
   for(security in securities){
     data <- masterset[masterset$Security == security,]
     sma <- calculateSimpleMovingAverage(dataset = data,days = days,limit = limit);
@@ -75,7 +76,9 @@ calculateExponentialMovingAverage <- function(dataset = dataset,days = 12,limit 
     temp_set <- cbind(security = as.character(dataset[row,"Security"]),date = as.character(dataset[row,"Date"]),ema = round(ema,3));
     resultset <- rbind(resultset,temp_set);
   }
-  resultset <- resultset[c(nrow(resultset):1),]
+  resultset$ema <- as.numeric(as.character(resultset$ema));
+  resultset$date <- as.Date(resultset$date);
+  #resultset <- resultset[c(nrow(resultset):1),]
   return(resultset);
 }
 
