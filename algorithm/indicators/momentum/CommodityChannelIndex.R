@@ -1,3 +1,8 @@
+#REFERENCE : https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:commodity_channel_index_cci
+# O/P Range : Between -x and +x
+# Buy Signal: >100
+# Sell Signal: <100
+
 calculateCommodityChannelIndex <- function(dataset = dataset,days = 20,limit = 100){
   options(scipen = 999)
   if(nrow(dataset) > limit)

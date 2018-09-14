@@ -25,7 +25,7 @@ calculateOnBalanceVolumeTrend <- function(dataset = dataset,days = 12,limit = 10
     resultset <- rbind(resultset,temp_set);
   }
   
-  resultset <- resultset[c(nrow(resultset):1),];
+  #resultset <- resultset[c(nrow(resultset):1),];
   return(resultset);
   
 }

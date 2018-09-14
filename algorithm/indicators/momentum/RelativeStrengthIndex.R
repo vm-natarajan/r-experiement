@@ -1,3 +1,8 @@
+#REFERENCE : https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:relative_strength_index_rsi
+# O/P Range : Between 0 and 100
+# Buy Signal: <30
+# Sell Signal: >70
+
 calculateRelativeStrengthIndex <- function(dataset = dataset,days = 14,limit = 100){
   
   if(nrow(dataset) > limit)

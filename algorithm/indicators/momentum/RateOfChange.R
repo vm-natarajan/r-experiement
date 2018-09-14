@@ -1,4 +1,7 @@
 #REFERENCE : https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:rate_of_change_roc_and_momentum
+# O/P Range : Between -x% and +x%
+# Buy Signal: Continuous Increasing Value
+# Sell Signal: Continuous Decreasing Value
 
 # R function to calculate rate of change of stocks for the dataset which is passed,considering the days
 

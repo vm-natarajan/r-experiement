@@ -16,6 +16,9 @@ INCREASE PATTERN:
 1.  US = 2*B
 2.  B = 3*US
 
+> kfit <- knnVCN(ssd[train,],rs$Change[train],ssd[-train,],K = 3,method = "canberra")
+> tab1 <- table(kfit$TstXIBelong,rs$Change[-train])
+
 DECREASE PATTERN:
 
 BRITANNIA

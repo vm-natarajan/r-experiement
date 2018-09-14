@@ -1,3 +1,8 @@
+#REFERENCE : https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:williams_r
+# O/P Range : Between 0 and -100
+# Buy Signal: <-80
+# Sell Signal: >-20
+
 calculateWilliamRPercent <- function(dataset = dataset,days = 14,limit = 100){
   
   if(nrow(dataset) > limit)

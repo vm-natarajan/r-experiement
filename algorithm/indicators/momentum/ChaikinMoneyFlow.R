@@ -1,3 +1,8 @@
+#REFERENCE : https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:chaikin_money_flow_cmf
+# O/P Range : Between -1 and +1
+# Buy Signal:  > 0.05
+# Sell Signal: < -0.05
+
 calculateChaikinMoneyFlow <- function(dataset = dataset,days = 20,limit = 100){
   options(scipen = 999,digits = 3)
   if(nrow(dataset) > limit)
@@ -19,7 +24,7 @@ calculateChaikinMoneyFlow <- function(dataset = dataset,days = 20,limit = 100){
   col_names <- c("security", "date","volume" ,"mfv","cmf");
   colnames(cmf) <- col_names;
   
-  for(srow in days:nrow(mfv)){
+  for(srow in (days+1):nrow(mfv)){
       previous_days_dataset <- mfv[c((srow-days+1):srow),];
       volume_sma_calc <- mean(previous_days_dataset$volume);
       mfv_sma_calc <- mean(previous_days_dataset$mfv);
